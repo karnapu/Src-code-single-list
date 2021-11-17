@@ -22,14 +22,15 @@ node *freed(node *head)
     head = NULL;
     return head;
 }
-
+//order may not like even one should always appear after odd
+// 1->2->2->4->5->6
 //even number 2->4->6->1->3->5
-node *separate_odd_even(node *head)
+node* separate_odd_even(node *list)
 {
-    // if (head->next == NULL)
-    //     return head;
-    // if (head == NULL)
-    //     return NULL;
+    /*    if (head->next == NULL)
+        return head;
+    if (head == NULL)
+        return NULL;
     node *temp = head;
     while (temp != NULL)
     {
@@ -40,25 +41,61 @@ node *separate_odd_even(node *head)
         }
         if (temp->data % 2 != 0)
         {
-            //remove the current node and to the last node
-            // node *t = temp;
-            // temp = temp->next;
-            // t->next = NULL;
-            // while (temp != NULL)
-            // {
-            //     temp = temp->next;
-            // }
-            // temp->next = t;
+            //remove the current node and append to the last node
             node *r_node = temp;
 
-            int data = temp->data;
+            int data=temp->data;
             temp = temp->next;
             free(r_node);
-            temp = append(temp, data);
+            temp=append(temp,data);
         }
     }
     return head;
+
+    */
+    // this is used have link to head node
+    node *evenhead = NULL, *oddhead = NULL, *temp;
+    node *reven, *rodd;//this is used to store the link in between node's, In case of morethan one node 
+    while (list != NULL)
+    {
+        //every time temp points to newnode at each iteration
+        temp = malloc(sizeof(node));
+        temp->data = list->data;
+        temp->next = NULL;
+        if (list->data % 2 == 0)
+        {
+            if (evenhead == NULL)
+            {
+                evenhead = temp;
+            }
+            else
+            {
+               // if more than one even node's
+                //setting up reven link to point new node 
+                reven->next = temp;
+            }
+            //at each iteration reven pointer to node is updated with linked to new
+            reven = temp;
+        }
+        else
+        {
+            if (oddhead == NULL)
+            {
+                oddhead = temp;
+            }
+            else
+            {
+                rodd->next = temp;
+            }
+            rodd = temp;
+        }
+        list = list->next;
+    }
+    reven->next = oddhead;
+    list = evenhead;
+    return list;
 }
+
 
 node *append(node *head, int data)
 {
